@@ -2,6 +2,7 @@ use crate::cartridge::Cartridge;
 
 pub trait Mapper {
   fn load_byte(&mut self, addr: u16) -> u8;
+
   fn write_byte(&mut self, addr: u16, value: u8);
 }
 
@@ -46,9 +47,6 @@ impl Mapper for Mapper2 {
     }
   }
 
-  // | addr' < 0x2000 = VUM.write chrRom addr' v
-  //   | addr' >= 0x8000 = modifyIORef prgBank1 (const $ toInt v `rem` prgBanks)
-  //   | addr' >= 0x6000 = VUM.write sram (addr' - 0x6000) v
   fn write_byte(&mut self, addr: u16, value: u8) {
     if addr < 0x2000 {
       let index = addr as usize;

@@ -4,6 +4,7 @@ mod cpu;
 mod mapper;
 mod nes;
 mod opcode;
+mod trace;
 mod util;
 
 use crate::bus::Bus;

@@ -1,4 +1,6 @@
-#[derive(Debug)]
+use std::fmt;
+
+#[derive(Debug, Copy, Clone)]
 pub enum AddressMode {
   Implied,
   Accumulator,
@@ -15,7 +17,7 @@ pub enum AddressMode {
   IndirectIndexed,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub enum Mnemonic {
   // Official - 47
   ADC,
@@ -96,19 +98,19 @@ pub enum Mnemonic {
   AXS,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub struct Opcode {
   pub raw: u8,
   pub mnemonic: Mnemonic,
-  pub addressMode: AddressMode,
+  pub address_mode: AddressMode,
   pub length: u8,
   pub cycles: u32,
-  pub pageCrossCycles: u8,
+  pub page_cross_cycles: u8,
 }
 
 impl Opcode {
   pub fn new(raw: u8) -> Opcode {
-    let (mnemonic, addressMode, length, cycles, pageCrossCycles) = match raw {
+    let (mnemonic, address_mode, length, cycles, page_cross_cycles) = match raw {
       0x69 => (Mnemonic::ADC, AddressMode::Immediate, 2, 2, 0),
       0x6D => (Mnemonic::ADC, AddressMode::Absolute, 3, 4, 0),
       0x7D => (Mnemonic::ADC, AddressMode::AbsoluteX, 3, 4, 1),
@@ -371,10 +373,20 @@ impl Opcode {
     Opcode {
       raw,
       mnemonic,
-      addressMode,
+      address_mode,
       length,
       cycles,
-      pageCrossCycles,
+      page_cross_cycles,
     }
+  }
+}
+
+impl fmt::Display for Opcode {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    write!(
+      f,
+      "Opcode: ({}, {:?}, {:?}, {}, {}, {})",
+      self.raw, self.mnemonic, self.address_mode, self.length, self.cycles, self.page_cross_cycles
+    )
   }
 }
