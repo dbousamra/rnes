@@ -1,6 +1,7 @@
 use crate::bus::Bus;
 use crate::opcode::*;
 use crate::trace::Trace;
+use crate::util;
 
 pub struct Cpu {
   pub sp: u8,
@@ -39,8 +40,9 @@ impl Cpu {
     let opcode = Opcode::new(self.bus.read_byte(self.pc));
     let trace = self.trace(opcode);
 
-    self.run_opcode(opcode);
+    let (page_crossed, address) = self.address_page_cross_for_mode(opcode.address_mode);
     self.pc += opcode.length as u16;
+    self.run_opcode(opcode, address);
 
     let ending_cycles = self.cycles;
     let total_cycles_taken = ending_cycles - starting_cycles;
@@ -52,6 +54,7 @@ impl Cpu {
     match address_mode {
       AddressMode::Absolute => {
         let value = self.bus.read_word(self.pc);
+        let page_crossed = false;
         (false, value)
       }
       AddressMode::AbsoluteX => {
@@ -72,26 +75,51 @@ impl Cpu {
       AddressMode::Indirect => {
         let value = self.bus.read_word(self.pc + 1);
         let address_value = self.read_word_bug(value);
-        (false, address_value)
+        let page_crossed = false;
+        (page_crossed, address_value)
       }
-      AddressMode::IndirectIndexed => {}
-      AddressMode::IndexedIndirect => {}
-      AddressMode::Relative => {}
-      AddressMode::ZeroPage => {}
-      AddressMode::ZeroPageX => {}
-      AddressMode::ZeroPageY => {}
+      AddressMode::IndirectIndexed => {
+        let value = self.bus.read_byte(self.pc + 2);
+        let address = self.read_word_bug(value as u16);
+        let address_value = address + (self.y as u16);
+        let page_crossed = Cpu::different_pages(address_value - self.y as u16, address_value);
+        (page_crossed, address_value)
+      }
+      AddressMode::IndexedIndirect => {
+        let value = self.bus.read_word(self.pc + 1);
+        let address_value = self.read_word_bug(value + self.x as u16);
+        let page_crossed = false;
+        (page_crossed, address_value)
+      }
+      AddressMode::Relative => {
+        let offset_16 = self.bus.read_word(self.pc + 1);
+        let offset_8 = util::first_nibble(offset_16);
+        let diff = if offset_8 < 0x80 { 0 } else { 0x100 };
+        let page_crossed = false;
+        (page_crossed, self.pc + 2 + offset_8 - diff)
+      }
+      AddressMode::ZeroPage => {
+        let value = self.bus.read_byte(self.pc + 1) as u16;
+        let page_crossed = false;
+        (page_crossed, value)
+      }
+
+      AddressMode::ZeroPageX => {
+        let value = (self.bus.read_byte(self.pc + 1) + self.x) as u16;
+        let page_crossed = false;
+        (page_crossed, value)
+      }
+      AddressMode::ZeroPageY => {
+        let value = (self.bus.read_byte(self.pc + 1) + self.y) as u16;
+        let page_crossed = false;
+        (page_crossed, value)
+      }
     }
   }
 
   fn different_pages(a: u16, b: u16) -> bool {
     (a & 0xFF00) != (b & 0xFF00)
   }
-
-  //   read16Bug :: Word16 -> Emulator Word16
-  // read16Bug addr = do
-  //   lo <- readCpuMemory8 addr
-  //   hi <- readCpuMemory8 $ (addr .&. 0xFF00) .|. toWord16 (toWord8 addr + 1)
-  //   pure $ makeW16 lo hi
 
   fn read_word_bug(&mut self, address: u16) -> u16 {
     let lo = self.bus.read_byte(address);
@@ -101,7 +129,7 @@ impl Cpu {
     util::make_word(lo, hi)
   }
 
-  fn run_opcode(&mut self, opcode: Opcode) -> () {
+  fn run_opcode(&mut self, opcode: Opcode, address: u16) -> () {
     match opcode.mnemonic {
       ADC => {
         // adc
