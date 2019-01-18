@@ -10,3 +10,19 @@ pub fn first_nibble(value: u16) -> u16 {
 pub fn split_word(value: u16) -> (u8, u8) {
   ((value & 0xFF) as u8, (value >> 8) as u8)
 }
+
+pub fn get_bit_at(input: u8, n: u8) -> bool {
+  if n < 8 {
+    input & (1 << n) != 0
+  } else {
+    false
+  }
+}
+
+pub fn set_bit_at(input: u8, n: u8) -> u8 {
+  input | 1 << n
+}
+
+pub fn clear_bit_at(input: u8, n: u8) -> u8 {
+  input & !(1 << n)
+}

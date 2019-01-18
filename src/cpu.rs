@@ -3,6 +3,17 @@ use crate::opcode::*;
 use crate::trace::Trace;
 use crate::util;
 
+enum Flag {
+  Negative = 0,
+  Overflow = 1,
+  Unused = 2,
+  Break = 3,
+  Decimal = 4,
+  InterruptDisable = 5,
+  Zero = 6,
+  Carry = 7,
+}
+
 pub struct Cpu {
   pub sp: u8,
   pub pc: u16,
@@ -131,307 +142,419 @@ impl Cpu {
 
   fn run_opcode(&mut self, opcode: Opcode, address: u16) -> () {
     match opcode.mnemonic {
-      ADC => {
-        // adc
-        self.not_implemented(opcode);
-      }
-      AND => {
-        // and
-        self.not_implemented(opcode);
-      }
-      ASL => {
-        // asl mode
-        self.not_implemented(opcode);
-      }
-      BCC => {
-        // bcc
-        self.not_implemented(opcode);
-      }
-      BCS => {
-        // bcs
-        self.not_implemented(opcode);
-      }
-      BEQ => {
-        // beq
-        self.not_implemented(opcode);
-      }
-      BIT => {
-        // bit
-        self.not_implemented(opcode);
-      }
-      BMI => {
-        // bmi
-        self.not_implemented(opcode);
-      }
-      BNE => {
-        // bne
-        self.not_implemented(opcode);
-      }
-      BPL => {
-        // bpl
-        self.not_implemented(opcode);
-      }
-      BRK => {
-        // const brk
-        self.not_implemented(opcode);
-      }
-      BVC => {
-        // bvc
-        self.not_implemented(opcode);
-      }
-      BVS => {
-        // bvs
-        self.not_implemented(opcode);
-      }
-      CLC => {
-        // const clc
-        self.not_implemented(opcode);
-      }
-      CLD => {
-        // const cld
-        self.not_implemented(opcode);
-      }
-      CLI => {
-        // const cli
-        self.not_implemented(opcode);
-      }
-      CLV => {
-        // const clv
-        self.not_implemented(opcode);
-      }
-      CMP => {
-        // cmp
-        self.not_implemented(opcode);
-      }
-      CPX => {
-        // cpx
-        self.not_implemented(opcode);
-      }
-      CPY => {
-        // cpy
-        self.not_implemented(opcode);
-      }
-      DEC => {
-        // dec
-        self.not_implemented(opcode);
-      }
-      DEX => {
-        // const dex
-        self.not_implemented(opcode);
-      }
-      DEY => {
-        // const dey
-        self.not_implemented(opcode);
-      }
-      EOR => {
-        // eor
-        self.not_implemented(opcode);
-      }
-      INC => {
-        // inc
-        self.not_implemented(opcode);
-      }
-      INX => {
-        // const inx
-        self.not_implemented(opcode);
-      }
-      INY => {
-        // const iny
-        self.not_implemented(opcode);
-      }
-      JMP => {
-        // jmp
-        self.not_implemented(opcode);
-      }
-      JSR => {
-        // jsr
-        self.not_implemented(opcode);
-      }
-      LDA => {
-        // lda
-        self.not_implemented(opcode);
-      }
-      LDX => {
-        // ldx
-        self.not_implemented(opcode);
-      }
-      LDY => {
-        // ldy
-        self.not_implemented(opcode);
-      }
-      LSR => {
-        // lsr mode
-        self.not_implemented(opcode);
-      }
-      NOP => {
-        // const nop
-        self.not_implemented(opcode);
-      }
-      PHA => {
-        // const pha
-        self.not_implemented(opcode);
-      }
-      PHP => {
-        // const php
-        self.not_implemented(opcode);
-      }
-      PLA => {
-        // const pla
-        self.not_implemented(opcode);
-      }
-      PLP => {
-        // const plp
-        self.not_implemented(opcode);
-      }
-      ORA => {
-        // ora
-        self.not_implemented(opcode);
-      }
-      RTI => {
-        // const rti
-        self.not_implemented(opcode);
-      }
-      RTS => {
-        // const rts
-        self.not_implemented(opcode);
-      }
-      ROR => {
-        // ror mode
-        self.not_implemented(opcode);
-      }
-      ROL => {
-        // rol mode
-        self.not_implemented(opcode);
-      }
-      SBC => {
-        // sbc
-        self.not_implemented(opcode);
-      }
-      SEC => {
-        // const sec
-        self.not_implemented(opcode);
-      }
-      SED => {
-        // const sed
-        self.not_implemented(opcode);
-      }
-      SEI => {
-        // const sei
-        self.not_implemented(opcode);
-      }
-      STA => {
-        // sta
-        self.not_implemented(opcode);
-      }
-      STX => {
-        // stx
-        self.not_implemented(opcode);
-      }
-      STY => {
-        // sty
-        self.not_implemented(opcode);
-      }
-      TAX => {
-        // const tax
-        self.not_implemented(opcode);
-      }
-      TAY => {
-        // const tay
-        self.not_implemented(opcode);
-      }
-      TSX => {
-        // const tsx
-        self.not_implemented(opcode);
-      }
-      TXA => {
-        // const txa
-        self.not_implemented(opcode);
-      }
-      TXS => {
-        // const txs
-        self.not_implemented(opcode);
-      }
-      TYA => {
-        // const tya
-        self.not_implemented(opcode);
-      }
-      KIL => {
-        // const $ illegal mnemonic
-        self.not_implemented(opcode);
-      }
-      LAX => {
-        // lax
-        self.not_implemented(opcode);
-      }
-      SAX => {
-        // sax
-        self.not_implemented(opcode);
-      }
-      DCP => {
-        // dcp
-        self.not_implemented(opcode);
-      }
-      ISC => {
-        // isc
-        self.not_implemented(opcode);
-      }
-      RLA => {
-        // rla mode
-        self.not_implemented(opcode);
-      }
-      RRA => {
-        // rra mode
-        self.not_implemented(opcode);
-      }
-      SLO => {
-        // slo mode
-        self.not_implemented(opcode);
-      }
-      SRE => {
-        // sre mode
-        self.not_implemented(opcode);
-      }
-      ANC => {
-        // anc
-        self.not_implemented(opcode);
-      }
-      ALR => {
-        // alr
-        self.not_implemented(opcode);
-      }
-      ARR => {
-        // arr
-        self.not_implemented(opcode);
-      }
-      XAA => {
-        // const $ illegal mnemonic
-        self.not_implemented(opcode);
-      }
-      AHX => {
-        // const $ illegal mnemonic
-        self.not_implemented(opcode);
-      }
-      TAS => {
-        // const $ illegal mnemonic
-        self.not_implemented(opcode);
-      }
-      SHX => {
-        // shx
-        self.not_implemented(opcode);
-      }
-      SHY => {
-        // shy
-        self.not_implemented(opcode);
-      }
-      LAS => {
-        // const $ illegal mnemonic
-        self.not_implemented(opcode);
-      }
-      AXS => {
-        // axs
-        self.not_implemented(opcode);
-      }
+      ADC => self.adc(address),
+      // AND => self.and(address),
+      // ASL => self.asl(address),
+      // BCC => self.bcc(address),
+      // BCS => self.bcs(address),
+      // BEQ => self.beq(address),
+      // BIT => self.bit(address),
+      // BMI => self.bmi(address),
+      // BNE => self.bne(address),
+      // BPL => self.bpl(address),
+      // BRK => self.brk(address),
+      // BVC => self.bvc(address),
+      // BVS => self.bvs(address),
+      // CLC => self.clc(address),
+      // CLD => self.cld(address),
+      // CLI => self.cli(address),
+      // CLV => self.clv(address),
+      // CMP => self.cmp(address),
+      // CPX => self.cpx(address),
+      // CPY => self.cpy(address),
+      // DEC => self.dec(address),
+      // DEX => self.dex(address),
+      // DEY => self.dey(address),
+      // EOR => self.eor(address),
+      // INC => self.inc(address),
+      // INX => self.inx(address),
+      // INY => self.iny(address),
+      // JMP => self.jmp(address),
+      // JSR => self.jsr(address),
+      // LDA => self.lda(address),
+      // LDX => self.ldx(address),
+      // LDY => self.ldy(address),
+      // LSR => self.lsr(address),
+      // NOP => self.nop(address),
+      // PHA => self.pha(address),
+      // PHP => self.php(address),
+      // PLA => self.pla(address),
+      // PLP => self.plp(address),
+      // ORA => self.ora(address),
+      // RTI => self.rti(address),
+      // RTS => self.rts(address),
+      // ROR => self.ror(address),
+      // ROL => self.rol(address),
+      // SBC => self.sbc(address),
+      // SEC => self.sec(address),
+      // SED => self.sed(address),
+      SEI => self.sei(address),
+      // STA => self.sta(address),
+      // STX => self.stx(address),
+      // STY => self.sty(address),
+      // TAX => self.tax(address),
+      // TAY => self.tay(address),
+      // TSX => self.tsx(address),
+      // TXA => self.txa(address),
+      // TXS => self.txs(address),
+      // TYA => self.tya(address),
+      // KIL => self.kil(address),
+      // LAX => self.lax(address),
+      // SAX => self.sax(address),
+      // DCP => self.dcp(address),
+      // ISC => self.isc(address),
+      // RLA => self.rla(address),
+      // RRA => self.rra(address),
+      // SLO => self.slo(address),
+      // SRE => self.sre(address),
+      // ANC => self.anc(address),
+      // ALR => self.alr(address),
+      // ARR => self.arr(address),
+      // XAA => self.xaa(address),
+      // AHX => self.ahx(address),
+      // TAS => self.tas(address),
+      // SHX => self.shx(address),
+      // SHY => self.shy(address),
+      // LAS => self.las(address),
+      // AXS => self.axs(address),
     }
+  }
+
+  fn adc(&mut self, address: u16) -> () {
+    let a_value = self.a;
+    let address_value = self.bus.read_byte(address);
+    let carry_value = self.get_flag(Flag::Carry) as u8;
+    println!("{}, {}, {}", a_value, address_value, carry_value);
+    self.a = a_value + address_value + carry_value;
+    let a_value_post = self.a;
+    self.set_zn(a_value_post);
+    let should_carry = (a_value as u32 + address_value as u32 + carry_value as u32) > 0xFF;
+    let does_overflow =
+      ((a_value ^ address_value) & 0x80) == 0 && ((a_value ^ a_value_post) & 0x80) != 0;
+
+    self.set_flag(Flag::Carry, should_carry);
+    self.set_flag(Flag::Overflow, does_overflow);
+  }
+
+  // fn and(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: and")
+  // }
+
+  // fn asl(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: asl")
+  // }
+
+  // fn bcc(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: bcc")
+  // }
+
+  // fn bcs(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: bcs")
+  // }
+
+  // fn beq(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: beq")
+  // }
+
+  // fn bit(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: bit")
+  // }
+
+  // fn bmi(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: bmi")
+  // }
+
+  // fn bne(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: bne")
+  // }
+
+  // fn bpl(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: bpl")
+  // }
+
+  // fn brk(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: brk")
+  // }
+
+  // fn bvc(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: bvc")
+  // }
+
+  // fn bvs(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: bvs")
+  // }
+
+  // fn clc(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: clc")
+  // }
+
+  // fn cld(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: cld")
+  // }
+
+  // fn cli(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: cli")
+  // }
+
+  // fn clv(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: clv")
+  // }
+
+  // fn cmp(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: cmp")
+  // }
+
+  // fn cpx(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: cpx")
+  // }
+
+  // fn cpy(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: cpy")
+  // }
+
+  // fn dec(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: dec")
+  // }
+
+  // fn dex(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: dex")
+  // }
+
+  // fn dey(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: dey")
+  // }
+
+  // fn eor(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: eor")
+  // }
+
+  // fn inc(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: inc")
+  // }
+
+  // fn inx(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: inx")
+  // }
+
+  // fn iny(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: iny")
+  // }
+
+  // fn jmp(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: jmp")
+  // }
+
+  // fn jsr(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: jsr")
+  // }
+
+  // fn lda(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: lda")
+  // }
+
+  // fn ldx(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: ldx")
+  // }
+
+  // fn ldy(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: ldy")
+  // }
+
+  // fn lsr(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: lsr")
+  // }
+
+  // fn nop(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: nop")
+  // }
+
+  // fn pha(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: pha")
+  // }
+
+  // fn php(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: php")
+  // }
+
+  // fn pla(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: pla")
+  // }
+
+  // fn plp(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: plp")
+  // }
+
+  // fn ora(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: ora")
+  // }
+
+  // fn rti(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: rti")
+  // }
+
+  // fn rts(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: rts")
+  // }
+
+  // fn ror(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: ror")
+  // }
+
+  // fn rol(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: rol")
+  // }
+
+  // fn sbc(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: sbc")
+  // }
+
+  // fn sec(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: sec")
+  // }
+
+  // fn sed(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: sed")
+  // }
+
+  fn sei(&mut self, address: u16) -> () {
+    self.set_flag(Flag::InterruptDisable, true)
+  }
+
+  // fn sta(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: sta")
+  // }
+
+  // fn stx(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: stx")
+  // }
+
+  // fn sty(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: sty")
+  // }
+
+  // fn tax(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: tax")
+  // }
+
+  // fn tay(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: tay")
+  // }
+
+  // fn tsx(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: tsx")
+  // }
+
+  // fn txa(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: txa")
+  // }
+
+  // fn txs(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: txs")
+  // }
+
+  // fn tya(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: tya")
+  // }
+
+  // fn kil(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: kil")
+  // }
+
+  // fn lax(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: lax")
+  // }
+
+  // fn sax(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: sax")
+  // }
+
+  // fn dcp(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: dcp")
+  // }
+
+  // fn isc(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: isc")
+  // }
+
+  // fn rla(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: rla")
+  // }
+
+  // fn rra(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: rra")
+  // }
+
+  // fn slo(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: slo")
+  // }
+
+  // fn sre(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: sre")
+  // }
+
+  // fn anc(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: anc")
+  // }
+
+  // fn alr(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: alr")
+  // }
+
+  // fn arr(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: arr")
+  // }
+
+  // fn xaa(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: xaa")
+  // }
+
+  // fn ahx(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: ahx")
+  // }
+
+  // fn tas(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: tas")
+  // }
+
+  // fn shx(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: shx")
+  // }
+
+  // fn shy(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: shy")
+  // }
+
+  // fn las(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: las")
+  // }
+
+  // fn axs(&mut self, address: u16) -> () {
+  //   panic!("Not implemented: axs")
+  // }
+
+  fn get_flag(&mut self, flag: Flag) -> bool {
+    util::get_bit_at(self.p, 7 - flag as u8)
+  }
+
+  fn set_flag(&mut self, flag: Flag, value: bool) -> () {
+    util::set_bit_at(self.p, 7 - flag as u8);
+  }
+
+  fn set_z(&mut self, value: u8) -> () {
+    self.set_flag(Flag::Zero, value == 0)
+  }
+
+  fn set_n(&mut self, value: u8) -> () {
+    self.set_flag(Flag::Negative, value & 0x80 != 0)
+  }
+
+  fn set_v(&mut self, value: u8) -> () {
+    self.set_flag(Flag::Overflow, value & 0x40 != 0)
+  }
+
+  fn set_zn(&mut self, value: u8) -> () {
+    self.set_z(value);
+    self.set_n(value);
   }
 
   fn trace(&mut self, opcode: Opcode) -> Trace {
