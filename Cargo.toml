@@ -4,4 +4,13 @@ version = "0.1.0"
 authors = ["Dominic Bou-Samra <dominic.bou.samra@gmail.com>"]
 edition = "2018"
 
+[lib]
+name = "rnes"
+path = "src/lib.rs"
+
+[[bin]]
+name = "rnesbin"
+path = "src/main.rs"
+
 [dependencies]
+bitfield = "0.13.1"

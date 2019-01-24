@@ -1,6 +1,6 @@
 use std::fmt;
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum AddressMode {
   Implied,
   Accumulator,
@@ -17,7 +17,7 @@ pub enum AddressMode {
   IndirectIndexed,
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub enum Mnemonic {
   // Official - 47
   ADC,
@@ -98,13 +98,13 @@ pub enum Mnemonic {
   AXS,
 }
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 pub struct Opcode {
   pub raw: u8,
   pub mnemonic: Mnemonic,
   pub address_mode: AddressMode,
   pub length: u8,
-  pub cycles: u32,
+  pub cycles: u8,
   pub page_cross_cycles: u8,
 }
 
@@ -112,6 +112,8 @@ impl Opcode {
   pub fn new(raw: u8) -> Opcode {
     let (mnemonic, address_mode, length, cycles, page_cross_cycles) = match raw {
       0x69 => (Mnemonic::ADC, AddressMode::Immediate, 2, 2, 0),
+      0x65 => (Mnemonic::ADC, AddressMode::ZeroPage, 2, 3, 0),
+      0x75 => (Mnemonic::ADC, AddressMode::ZeroPageX, 2, 4, 0),
       0x6D => (Mnemonic::ADC, AddressMode::Absolute, 3, 4, 0),
       0x7D => (Mnemonic::ADC, AddressMode::AbsoluteX, 3, 4, 1),
       0x79 => (Mnemonic::ADC, AddressMode::AbsoluteY, 3, 4, 1),
@@ -367,7 +369,7 @@ impl Opcode {
       0x04 => (Mnemonic::NOP, AddressMode::ZeroPage, 2, 3, 0),
       0x8B => (Mnemonic::XAA, AddressMode::Immediate, 2, 2, 0),
       0x9B => (Mnemonic::TAS, AddressMode::AbsoluteY, 3, 5, 0),
-      _ => panic!("{} is not a known opcode", raw),
+      _ => panic!("0x{:X} is not a known opcode", raw),
     };
 
     Opcode {

@@ -33,11 +33,11 @@ impl Mapper for Mapper2 {
     if addr < 0x2000 {
       let index = addr as usize;
       self.cartridge.chr_rom[index]
-    } else if addr > 0xC000 {
-      let index = self.prg_bank_2 as usize * 0x4000 + addr as usize - 0xC000;
+    } else if addr >= 0xC000 {
+      let index = self.prg_bank_2 as usize * 0x4000 + (addr as usize - 0xC000);
       self.cartridge.prg_rom[index]
     } else if addr >= 0x8000 {
-      let index = self.prg_bank_1 as usize * 0x4000 + addr as usize - 0x8000;
+      let index = self.prg_bank_1 as usize * 0x4000 + (addr as usize - 0x8000);
       self.cartridge.prg_rom[index]
     } else if addr >= 0x6000 {
       let index = addr as usize - 0x6000;
