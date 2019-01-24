@@ -172,7 +172,7 @@ impl Cpu {
       Mnemonic::BVS => self.bvs(address),
       Mnemonic::CLC => self.clc(),
       Mnemonic::CLD => self.cld(),
-      // Mnemonic::CLI => self.cli(address),
+      Mnemonic::CLI => self.cli(address),
       Mnemonic::CLV => self.clv(),
       Mnemonic::CMP => self.cmp(address),
       Mnemonic::CPX => self.cpx(address),
@@ -222,17 +222,16 @@ impl Cpu {
       Mnemonic::RRA => self.rra(address, opcode.address_mode),
       Mnemonic::SLO => self.slo(address, opcode.address_mode),
       Mnemonic::SRE => self.sre(address, opcode.address_mode),
-      // Mnemonic::ANC => self.anc(address),
-      // Mnemonic::ALR => self.alr(address),
-      // Mnemonic::ARR => self.arr(address),
-      // Mnemonic::XAA => self.xaa(address),
-      // Mnemonic::AHX => self.ahx(address),
-      // Mnemonic::TAS => self.tas(address),
-      // Mnemonic::SHX => self.shx(address),
-      // Mnemonic::SHY => self.shy(address),
-      // Mnemonic::LAS => self.las(address),
-      // Mnemonic::AXS => self.axs(address),
-      _ => panic!("Opcode not implemented {}", opcode),
+      Mnemonic::ANC => self.anc(address),
+      Mnemonic::ALR => self.alr(address),
+      Mnemonic::ARR => self.arr(address),
+      Mnemonic::XAA => self.xaa(address),
+      Mnemonic::AHX => self.ahx(address),
+      Mnemonic::TAS => self.tas(address),
+      Mnemonic::SHX => self.shx(address),
+      Mnemonic::SHY => self.shy(address),
+      Mnemonic::LAS => self.las(address),
+      Mnemonic::AXS => self.axs(address),
     }
   }
 
@@ -334,9 +333,9 @@ impl Cpu {
     self.set_flag(Flag::Decimal, false)
   }
 
-  // fn cli(&mut self, address: u16) -> () {
-  //   panic!("Not implemented: cli")
-  // }
+  fn cli(&mut self, address: u16) -> () {
+    panic!("Not implemented: cli")
+  }
 
   fn clv(&mut self) -> () {
     self.set_flag(Flag::Overflow, false)
@@ -575,9 +574,9 @@ impl Cpu {
     self.set_zn(self.a)
   }
 
-  // fn kil(&mut self, address: u16) -> () {
-  //   panic!("Not implemented: kil")
-  // }
+  fn kil(&mut self, address: u16) -> () {
+    panic!("Not implemented: kil")
+  }
 
   fn lax(&mut self, address: u16) -> () {
     let value = self.bus.read_byte(address);
@@ -620,58 +619,45 @@ impl Cpu {
     self.eor(address);
   }
 
-  // fn anc(&mut self, address: u16) -> () {
-  //   panic!("Not implemented: anc")
-  // }
+  fn anc(&mut self, address: u16) -> () {
+    panic!("Not implemented: anc")
+  }
 
-  // fn alr(&mut self, address: u16) -> () {
-  //   panic!("Not implemented: alr")
-  // }
+  fn alr(&mut self, address: u16) -> () {
+    panic!("Not implemented: alr")
+  }
 
-  // fn arr(&mut self, address: u16) -> () {
-  //   panic!("Not implemented: arr")
-  // }
+  fn arr(&mut self, address: u16) -> () {
+    panic!("Not implemented: arr")
+  }
 
-  // fn xaa(&mut self, address: u16) -> () {
-  //   panic!("Not implemented: xaa")
-  // }
+  fn xaa(&mut self, address: u16) -> () {
+    panic!("Not implemented: xaa")
+  }
 
-  // fn ahx(&mut self, address: u16) -> () {
-  //   panic!("Not implemented: ahx")
-  // }
+  fn ahx(&mut self, address: u16) -> () {
+    panic!("Not implemented: ahx")
+  }
 
-  // fn tas(&mut self, address: u16) -> () {
-  //   panic!("Not implemented: tas")
-  // }
+  fn tas(&mut self, address: u16) -> () {
+    panic!("Not implemented: tas")
+  }
 
-  // fn shx(&mut self, address: u16) -> () {
-  //   panic!("Not implemented: shx")
-  // }
+  fn shx(&mut self, address: u16) -> () {
+    panic!("Not implemented: shx")
+  }
 
-  // fn shy(&mut self, address: u16) -> () {
-  //   panic!("Not implemented: shy")
-  // }
+  fn shy(&mut self, address: u16) -> () {
+    panic!("Not implemented: shy")
+  }
 
-  // fn las(&mut self, address: u16) -> () {
-  //   panic!("Not implemented: las")
-  // }
+  fn las(&mut self, address: u16) -> () {
+    panic!("Not implemented: las")
+  }
 
-  // fn axs(&mut self, address: u16) -> () {
-  //   panic!("Not implemented: axs")
-  // }
-
-  // push :: Word8 -> Emulator ()
-  // push v = do
-  //   spv <- loadCpu sp
-  //   let i = 0x100 .|. toWord16 spv
-  //   writeCpuMemory8 i v
-  //   storeCpu sp (spv - 1)
-
-  // push16 :: Word16 -> Emulator ()
-  // push16 v = do
-  //   let (lo, hi) = splitW16 v
-  //   push hi
-  //   push lo
+  fn axs(&mut self, address: u16) -> () {
+    panic!("Not implemented: axs")
+  }
 
   fn push_byte(&mut self, value: u8) -> () {
     let sp_value = self.sp;
